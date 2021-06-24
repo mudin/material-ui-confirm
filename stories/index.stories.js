@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { action } from '@storybook/addon-actions';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -134,6 +134,35 @@ const WithCustomContent = () => {
   );
 };
 
+const WithLoading = () => {
+  const confirm = useConfirm();
+  const [loading, setLoading] = useState(false);
+  return (
+    <Button onClick={() => {
+      confirm({
+        confirmationLoading: loading, // NEED FIX
+        closeAfterConfirm: false,
+        content: (
+          <div>
+            <LinearProgress />
+            <Box p={2}>This isn't wrapped in DialogContentText.</Box>
+          </div>
+        )
+      })
+      .then((close)=>{
+        // TODO: loading bar is not showing
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          close();
+        }, 3000);
+      });
+    }}>
+      Click
+    </Button>
+  );
+};
+
 storiesOf('Confirmation dialog', module)
   .addDecorator(getStory => (
     <ConfirmProvider>{getStory()}</ConfirmProvider>
@@ -145,4 +174,5 @@ storiesOf('Confirmation dialog', module)
   .add('with custom button props', () => <WithCustomButtonProps />)
   .add('with custom callbacks', () => <WithCustomCallbacks />)
   .add('with custom elements', () => <WithCustomElements />)
-  .add('with custom dialog content', () => <WithCustomContent />);
+  .add('with custom dialog content', () => <WithCustomContent />)
+  .add('with loading', () => <WithLoading />);

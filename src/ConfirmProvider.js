@@ -7,6 +7,8 @@ const DEFAULT_OPTIONS = {
   description: '',
   content: null,
   confirmationText: 'Ok',
+  confirmationLoading: false,
+  closeAfterConfirm: true,
   cancellationText: 'Cancel',
   dialogProps: {},
   confirmationButtonProps: {},
@@ -59,8 +61,11 @@ const ConfirmProvider = ({ children, defaultOptions = {} }) => {
   }, [reject, handleClose]);
 
   const handleConfirm = useCallback(() => {
-    resolve();
-    handleClose();
+    resolve(handleClose);
+    if (options.closeAfterConfirm) {
+      handleClose();
+    }
+    ;
   }, [resolve, handleClose]);
 
   return (

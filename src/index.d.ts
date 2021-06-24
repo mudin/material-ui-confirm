@@ -7,6 +7,8 @@ export interface ConfirmOptions {
   description?: React.ReactNode;
   content?: React.ReactNode | null;
   confirmationText?: React.ReactNode;
+  confirmationLoading?: boolean;
+  closeAfterConfirm?: boolean;
   cancellationText?: React.ReactNode;
   dialogProps?: Omit<DialogProps, "open">;
   confirmationButtonProps?: ButtonProps;
